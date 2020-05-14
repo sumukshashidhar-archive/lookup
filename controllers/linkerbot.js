@@ -5,7 +5,7 @@ module.exports = {
         var strs = '';
         for(let i=0; i<message.length; i++) {
             if(message[i] == '{') {
-                let j = i; 
+                let j = i+1; 
                 while (message[j] != '}') {
                     strs = strs + message[j];
                     j = j + 1;
