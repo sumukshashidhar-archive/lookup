@@ -27,7 +27,11 @@ io.sockets.on('connection', function(socket) {
 
     socket.on('chat_message', function(message) {
         //have to parse this message first
-        console.log(linkerbot.checkMessage(message))
+        var resFromBot = linkerbot.extractMessage(message);
+        if(resFromBot["response"] == true) {
+            // pass it to the linking bot
+            io.emit('chat_message', '<strong>' + 'LinkFromBot!' + '</strong>: ' + resFromBot["message"]);
+        }
         io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
     });
 
