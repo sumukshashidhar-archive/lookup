@@ -5,10 +5,14 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 
+var linkerbot = require('./controllers/linkerbot.js')
+
 app.get('/', function(req, res) {
     console.log('hit the home page');
     res.render('index.ejs')
 })
+
+
 
 io.sockets.on('connection', function(socket) {
     // write all the realtime communication functions here
@@ -23,7 +27,7 @@ io.sockets.on('connection', function(socket) {
 
     socket.on('chat_message', function(message) {
         //have to parse this message first
-        console.log(message)
+        console.log(linkerbot.checkMessage(message))
         io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
     });
 
