@@ -28,9 +28,11 @@ io.sockets.on('connection', function(socket) {
     socket.on('chat_message', function(message) {
         //have to parse this message first
         var resFromBot = linkerbot.extractMessage(message);
+        console.log(resFromBot)
         if(resFromBot["response"] == true) {
             // pass it to the linking bot
-            io.emit('chat_message', '<strong>' + 'LinkFromBot!' + '</strong>: ' + resFromBot["message"]);
+            var google_url = "http://www.google.com/search?q=" + resFromBot["message"]
+            io.emit('chat_message', '<strong>' + 'LinkFromBot!' + '</strong>: ' + '<a href="'+google_url+'" target="_blank ">' + resFromBot["message"] + '</a>');
         }
         io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
     });

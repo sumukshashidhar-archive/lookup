@@ -15,8 +15,6 @@ module.exports = {
                 return {"response":true, "message":strs}
             }
         }
-        if(checker==false) {
-            return {"response":false, "message":undefined}
-        }
+        return {"response": false, "message":undefined}
     }
 }
