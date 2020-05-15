@@ -1,5 +1,25 @@
 var express = require("express");
 var app = express();
+var bodyParser = require("body-parser");
+const cors = require("cors");
+const cookieParser = require('cookie-parser');
+const fs = require('fs');
+
+
+app.use(express.static("styles"));
+app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.use(cors());
+app.use(function (req, res, next) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    next();
+});
+//To get data from the angular project
+app.use(bodyParser.json());
+app.use(cors());
+app.use(cookieParser());
+
 
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
@@ -7,9 +27,32 @@ const io = require('socket.io')(http);
 
 var linkerbot = require('./controllers/linkerbot.js')
 
+
+var loggedIn = false; 
+
 app.get('/', function(req, res) {
+    if(loggedIn) {
+        res.redirect('/chat')
+    }
     console.log('hit the home page');
     res.render('index.ejs')
+})
+
+app.post('/login', function(req, res) {
+    if(req.body['Authentication Key'] == "key") {
+        loggedIn = true;
+        res.redirect('/chat')
+    }
+})
+
+app.get('/deauth', function(req, res) {
+    loggedIn = false;    
+})
+
+app.get('/chat', function(req, res) {
+    if(loggedIn) {
+        res.render('chat.ejs')
+    }
 })
 
 
