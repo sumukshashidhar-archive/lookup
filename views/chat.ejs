@@ -21,13 +21,14 @@
       <input id="txt" autocomplete="off" autofocus="on" oninput="isTyping()" placeholder="Type your message here..." /><button>Send</button>
     </form>
     <script>
-            var HOST = location.origin.replace(/^http/, 'ws')
-            var ws = new WebSocket(HOST);
-            var el = document.getElementById('server-time');
-            ws.onmessage = function (event) {
-              el.innerHTML = 'Server time: ' + event.data;
-            };
-            var socket = io.connect(HOST); // this has to connect to the IP when possible
+            var socket = io();
+            var el;
+
+            socket.on('time', function(timeString) {
+              el = document.getElementById('server-time')
+              el.innerHTML = 'Server time: ' + timeString;
+            });
+            //var socket = io.connect(HOST); // this has to connect to the IP when possible
             // submit text message without reload/refresh the page
             $('form').submit(function(e){
                 e.preventDefault(); // prevents page reloading
