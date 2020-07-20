@@ -58,6 +58,7 @@ app.get('/chat', function(req, res) {
 
 
 io.sockets.on('connection', function(socket) {
+    setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
     // write all the realtime communication functions here
     socket.on('username', function(username) {
         socket.username = username;
